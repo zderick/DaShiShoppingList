@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const auth = require('../../middleware/auth');
 
 const ItemCollection = require('../../models/ItemSchema.js');
 
@@ -9,7 +10,7 @@ router.get('/', (req, res) => {
 		.then(items => res.json(items));
 	});
 
-router.post('/add', (req, res) => {
+router.post('/add', auth, (req, res) => {
 	const newItem = new ItemCollection({
 		name: req.body.name
 	});
@@ -18,7 +19,7 @@ router.post('/add', (req, res) => {
 				  .catch(err => res.json(err));
 	});
 
-router.delete('/delete/:id', (req, res) => {
+router.delete('/delete/:id', auth, (req, res) => {
 	ItemCollection.findByIdAndRemove(req.params.id)
 	.then(item => {
 		res.json({success: 'true'});

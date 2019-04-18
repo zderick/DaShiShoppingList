@@ -1,18 +1,29 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 const path = require('path');
 
 const routeItems = require('./routes/api/items');
+const routeUsers = require('./routes/api/users');
+const routeAuth = require('./routes/api/auth');
+const config = require('config');
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use('/api/items', routeItems);
+app.use('/api/users', routeUsers);
+app.use('/api/auth', routeAuth);
 
-const db = require('./config/keys').mongoURI;
 
-mongoose.connect(db)
+
+const db = config.get('mongoURI');
+
+mongoose.connect(db,
+		{
+		useNewUrlParser: true,
+		useCreateIndex: true,
+		}
+	)
 		.then(res => console.log("connected to mongodb"))
 		.catch(err => console.log(err));
 
