@@ -8,6 +8,7 @@ const jwt = require('jsonwebtoken');
 
 router.post('/', (req, res) => {
         const { name, email, password } = req.body;
+	 email = email.toLowerCase();
 
         if(!name || !email || !password){
                 return res.status(400).json({msg: 'Please enter all fields'});
